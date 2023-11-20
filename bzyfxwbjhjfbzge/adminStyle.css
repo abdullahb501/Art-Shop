@@ -1,0 +1,89 @@
+body {
+    background-color: #EF476F;
+    margin: 0;
+}
+
+h1{
+    float: left;
+    border-style: ridge;
+    border-width: 0.5rem;
+    font-size: 50pt;
+    display: inline;
+    background-color: #26547C;
+    color: white;
+    padding: 1rem;
+    margin: 1rem;
+}
+
+p{
+    margin: 0;
+}
+
+#Status{
+    background-color: #26547C;
+    color: white;
+    clear: both;
+    margin: 1rem;
+    font-size: 12pt;
+    font-family: Arial,sans-serif;
+}
+
+.noStatus{
+    padding: 1rem;
+}
+
+#updateArtSuccess,#updateOrderSuccess{
+    padding: 1rem;
+    background-color: seagreen;
+    color: black;
+}
+
+.updateArtFail,.updateOrderFail{
+    background-color: darkred;
+    color: white;
+}
+
+button{
+    clear: both;
+    margin-left: 1rem;
+    padding: 1rem;
+    background-color: darkslateblue;
+    color: lightgoldenrodyellow;
+}
+
+input[type=submit]{
+    clear: both;
+    padding: 1rem;
+    background-color: darkslateblue;
+    color: lightgoldenrodyellow;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+table{
+    clear: both;
+    margin-left: 1rem;
+}
+
+th,td{
+    padding: 0.5rem;
+}
+
+h2{
+    border-style: double;
+    border-width: 0.5rem;
+    clear: both;
+    background-color: #26547C;
+    color: white;
+    padding: 1rem;
+    margin: 1rem;
+    width: fit-content;
+}
+
+/*https://stackoverflow.com/questions/4309950/how-to-align-input-forms-in-html*/
+form  { display: table; margin-left: 1rem;}
+p     { display: table-row;  }
+label { display: table-cell; padding-right: 1rem;}
+input { display: table-cell; }

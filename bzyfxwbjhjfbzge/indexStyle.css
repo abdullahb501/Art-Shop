@@ -1,3 +1,15 @@
+@media only screen and (max-width: 768px) {
+    h1 {font-size: 14pt;}
+    p{font-size: 12pt;}
+    body{background-color: black;}
+}
+
+@media only screen and (max-width: 480px) {
+    h1 {font-size: 12px;}
+    p{font-size: 10px;}
+    body{background-color: lightskyblue;}
+}
+
 body {
     background-color: #EF476F;
     margin: 0;
@@ -8,7 +20,8 @@ img{
     width: 10rem;
 }
 
-#discount{
+.discount{
+    margin: 0 0 1rem 0;
     position: relative;
     top: 0;
     border-style: inset;
@@ -54,32 +67,78 @@ h1{
     float: left;
     font-size: 50pt;
     display: inline;
-    /*text-decoration: underline;*/
     background-color: #26547C;
     color: white;
     padding: 1rem;
-    margin: 0;
+    margin: 0 1rem 1rem 1rem;
 }
 
 p{
+    font-size: 20px;
     padding: 0.5rem 0 0 0.5rem;
     clear: both;
 }
 
-.contentContainer{
+#sectionButtons{
+    clear: both;
+}
+
+#prevButton{
     float: left;
+    margin-left: 1rem;
+}
+
+#nextButton{
+    float: right;
+    margin-right: 1rem;
+}
+
+#contentGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); /* Adjust column width as needed */
+    grid-gap: 1rem; /* Adjust the gap between grid items as needed */
+}
+
+.contentContainer{
+    display: none;
     background-color: cornflowerblue;
     border-style: solid;
     padding: 1rem;
     margin: 1rem;
 }
 
-#details{
+#main{
+    display: table;
+    width: 100%;
+}
+
+#orderForm{
+    display: table-cell;
+    width: 50%;
+}
+
+/*https://stackoverflow.com/questions/4309950/how-to-align-input-forms-in-html*/
+form  { display: table; margin-left: 1rem;}
+form p     { display: table-row;  }
+form label { display: table-cell; padding-right: 1rem;}
+form input { display: table-cell; }
+
+.contentContainerOrder{
+    display: table-cell;
+    width: 50%;
+    /*margin-left: 10rem; !* Thank you IE *!*/
+    border-left: 1px solid black;
+    background-color: cornflowerblue;
+    padding: 1rem;
+}
+
+.details{
     background-color: #26547C;
     padding: 0 0.5rem 0.5rem 0.5rem;
     color: white;
 }
 
-table{
-    clear: both;
-}
+/*table{*/
+/*    clear: both;*/
+/*    margin: 1rem;*/
+/*}*/

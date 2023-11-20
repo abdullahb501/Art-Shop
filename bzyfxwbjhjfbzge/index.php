@@ -25,33 +25,32 @@ function storeDetails($conn){
 function getDetails($conn, $name){
     $sql = "SELECT * FROM `Art` WHERE `name` = '$name'";
     $result = $conn->query($sql);
-    $result->data_seek(0);
     if ($result->num_rows>0) {
         while ($row = $result->fetch_assoc()) {
-
-            echo "<div id =\"details\"><tr>" .
+            echo "<div class =\"details\"><table>" .
 //                https://stackoverflow.com/questions/20556773/php-display-image-blob-from-mysql
-                "<td><br>" . '<img alt="image" src="data:image/jpeg;base64,'.base64_encode($row['Picture']).'"/>' . "<br></td>" .
-                "<td><br> ID: " . $row["ID"] . "<br></td>" .
-                "<td> Name: " . $row["Name"] . "<br></td>" .
-                "<td> Date: " . $row["Date"] . "<br></td>" .
-                "<td> Width: " . $row["Width"] . "m <br></td>" .
-                "<td> Height: " . $row["Height"] . "m <br></td>" .
-                "<td> Price: £" . $row["Price"] . "<br></td>" .
-                "<td> Desc: " . $row["Description"] . "<br></td>" .
-                "</tr></div>";
+                "<tr><td>" . '<img alt="image" src="data:image/jpeg;base64,'.base64_encode($row['Picture']).'">' . "</td></tr>" .
+                "<tr><td> ID: " . $row["ID"] . "</td></tr>" .
+                "<tr><td> Name: " . $row["Name"] . "</td></tr>" .
+                "<tr><td> Date: " . $row["Date"] . "</td></tr>" .
+                "<tr><td> Width: " . $row["Width"] . "m </td></tr>" .
+                "<tr><td> Height: " . $row["Height"] . "m </td></tr>" .
+                "<tr><td> Price: £" . $row["Price"] . "</td></tr>" .
+                "<tr><td> Desc: " . $row["Description"] . "</td></tr>" .
+                "</table></div>";
         }
     }
+    $result->data_seek(0);
 }
-
 function content($conn,$a,$count){
     ?>
     <div class = "contentContainer">
-        <?php getDetails($conn,$a[$count]); ?>
-        <p><button id= "<?php echo $a[$count]."Button" ?>" name = "<?php echo $a[$count]."Button" ?>" onclick="orderForm()">Click</button></p>
+        <?php
+        getDetails($conn,$a[$count]);
+        ?>
+        <p><button id= "<?php echo $a[$count]."Button" ?>" name = "<?php echo $a[$count]."Button" ?>" onclick="orderForm('<?php echo $a[$count]."Button" ?>')">Click</button></p>
     </div>
 <?php
-    echo $count;
 }
 ?>
 <!DOCTYPE html>
@@ -59,10 +58,11 @@ function content($conn,$a,$count){
 <head>
 <meta charset="UTF-8">
 <title>Cara's Art Shop</title>
-    <link rel="stylesheet" type="text/css" href="indexStyle.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="indexStyle.css">
 </head>
 <body>
-<p id = "discount"><strong> 15% Off Orders Over £30 </strong></p>
+<p class = "discount"><strong> 15% Off Orders Over £30 </strong></p>
 <h1>Cara's Art Shop</h1>
 
 <div id = "navbar">
@@ -71,41 +71,80 @@ function content($conn,$a,$count){
     <a href="#">Our Mission</a>
     <a href="#">Careers</a>
     <a href="#">Suppliers</a>
+    <a id="basket-link" href="order.php">Basket</a>
 </div>
 
 <p>Hello and welcome to my website! Below are my products for sale.</p>
+<div id = "sectionButtons">
+    <div id="prevButton"><button name="prevButton" onclick="prevB()">&lt;&lt; Previous</button></div>
+    <div id="nextButton"><button name="nextButton" onclick="nextB()">Next &gt;&gt;</button></div>
+</div>
+<br><br><br>
+<div id = "contentGrid">
+    <?php $a = storeDetails($conn);
+    $count = 0;
+    $max = 0;
 
-<?php $a = storeDetails($conn);
-$count = 0;
-$max = 0;
-
-$sql = "SELECT ID FROM `Art`";
-$result = $conn->query($sql);
-$result->data_seek(0);
-if ($result->num_rows>0) {
-    while ($row = $result->fetch_assoc()) {
-        $max += 1;
+    $sql = "SELECT ID FROM `Art`";
+    $result = $conn->query($sql);
+    $result->data_seek(0);
+    if ($result->num_rows>0) {
+        while ($row = $result->fetch_assoc()) {
+            $max += 1;
+        }
     }
-}
 
-for ($i=0;$i<$max;$i++){
-    content($conn,$a,$count);
-    $count++;
-}
-?>
+    for ($i=0;$i<$max;$i++){
+        content($conn,$a,$count);
+        $count++;
+    }
+
+    ?>
+</div>
+
 <script>
-    function orderForm() {
-        window.location.href = "order.php";
-        if("Button" in <?php echo $a[$count]."Button"?>){
-            document.getElementById(<?php echo $a[$count]."Button"?>).addEventListener("click", sendName)
+    let contentContainers = document.querySelectorAll(".contentContainer");
+    let currentArtIndex = 0;
+
+    function hideAllContent() {
+        contentContainers.forEach(container => {
+            container.style.display = "none";
+        });
+    }
+
+    function showContent(startIndex, count) {
+        for (let i = startIndex; i < startIndex + count; i++) {
+            if (contentContainers[i]) {
+                contentContainers[i].style.display = "block";
+            }
         }
     }
 
-    function sendName(){
-        if("Button" in document.getElementById(<?php echo $a[$count]."Button"?>)){
-            // TODO: Make AJAX REQUEST TO SEND Name to other page probably
-<!--            --><?php //$artHouse = safePost($conn,$a[$count])  ?>
+    let itemsPerPage = 12;
+    function prevB() {
+        hideAllContent();
+        currentArtIndex -= itemsPerPage;
+        if (currentArtIndex < 0) {
+            currentArtIndex = 0;
         }
+        showContent(currentArtIndex, itemsPerPage);
+    }
+
+    function nextB() {
+        hideAllContent();
+        currentArtIndex += itemsPerPage;
+        if (currentArtIndex >= contentContainers.length) {
+            currentArtIndex = contentContainers.length - itemsPerPage;
+        }
+        showContent(currentArtIndex, itemsPerPage);
+    }
+
+    hideAllContent();
+    showContent(currentArtIndex, itemsPerPage);
+
+    function orderForm(artName) {
+        window.location.href="order.php?artName=" + artName;
+        // TODO: send buttonID to order.php until basket link is clicked
     }
 </script>
 </body>
