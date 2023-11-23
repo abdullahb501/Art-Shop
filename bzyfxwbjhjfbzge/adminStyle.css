@@ -51,6 +51,10 @@ button{
     color: lightgoldenrodyellow;
 }
 
+input[type=file]{
+    margin: 0 1rem  0.5rem 0;
+}
+
 input[type=submit]{
     clear: both;
     padding: 1rem;

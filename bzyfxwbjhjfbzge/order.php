@@ -1,116 +1,156 @@
 <?php
-
+//session_start();
 function safeGET($conn, $name){
-    return isset($_GET[$name])?$conn->real_escape_string(strip_tags($_GET[$name])):"";
+    return isset($_GET[$name]) ? $conn->real_escape_string(strip_tags($_GET[$name])) : "";
 }
 
 function safePost($conn, $name){
-    return isset($_POST[$name])?$conn->real_escape_string(strip_tags($_POST[$name])):"";
+    return isset($_POST[$name]) ? $conn->real_escape_string(strip_tags($_POST[$name])) : "";
 }
 
-function getDetails($conn, $name){
-    $sql = "SELECT * FROM `Art` WHERE `name` = '$name'";
+function getDetails($conn, $id){
+    $sql = "SELECT * FROM `Art` WHERE `ID` = '$id'";
     $result = $conn->query($sql);
-    if ($result->num_rows>0) {
-        while ($row = $result->fetch_assoc()) {
+    if ($result->num_rows > 0) {
+       $row = $result->fetch_assoc();
             echo "<div id =\"details\"><table>" .
-//                https://stackoverflow.com/questions/20556773/php-display-image-blob-from-mysql
-                "<tr><td>" . '<img alt="image" src="data:image/jpeg;base64,'.base64_encode($row['Picture']).'"/>' . "</tr></td>" .
-                "<tr><td> ID: " . $row["ID"] . "</tr></td>" .
-                "<tr><td> Name: " . $row["Name"] . "</tr></td>" .
-                "<tr><td> Date: " . $row["Date"] . "</tr></td>" .
-                "<tr><td> Width: " . $row["Width"] . "m </tr></td>" .
-                "<tr><td> Height: " . $row["Height"] . "m </tr></td>" .
-                "<tr><td> Price: £" . $row["Price"] . "</tr></td>" .
-                "<tr><td> Desc: " . $row["Description"] . "</tr></td>" .
+                "<tr><td>" . '<img alt="image" src="data:image/jpeg;base64,' . base64_encode($row['Picture']) . '"/>' . "</tr></td>" .
+                "<tr><td> ID: " . $row["ID"] . "</td></tr>" .
+                "<tr><td> Name: " . $row["Name"] . "</td></tr>" .
+                "<tr><td> Date: " . $row["Date"] . "</td></tr>" .
+                "<tr><td> Width: " . $row["Width"] . "m </td></tr>" .
+                "<tr><td> Height: " . $row["Height"] . "m </td></tr>" .
+                "<tr><td> Price: £" . $row["Price"] . "</td></tr>" .
+                "<tr><td> Desc: " . $row["Description"] . "</td></tr>" .
                 "</table></div>";
-        }
+            return true;
     }
     $result->data_seek(0);
+    return  false;
 }
 
-function getArtID($conn, $name){
-    $sql = "SELECT * FROM `Art` WHERE `name` = '$name'";
+function markSold($conn, $id){
+    $sql = "UPDATE `Art` SET `Sold`='1' WHERE `ID`='$id'";
     $result = $conn->query($sql);
-    if ($result->num_rows>0) {
-        while ($row = $result->fetch_assoc()) {
-           if($row["Name"] === $name){
-               return $row["ID"];
-           }
-        }
+    if($result){
+        return true;
     }
-    $result->data_seek(0);
-    return 0;
+    return false;
 }
 
-function orderComplete($conn,$name,$phone,$email,$address,$artID){
+
+function orderComplete($conn, $name, $phone, $email, $address, $artID){
     $sql = "INSERT INTO `Order` (`ID`,`Name`,`Phone`,`Email`,`Postal_Address`,`ArtID`)
             VALUES (NULL,'$name','$phone','$email','$address','$artID')";
-    $result = $conn->query($sql);
-    if ($conn->query($sql) === TRUE) {
-        echo "inserted new entry with id ".$conn->insert_id;
-    } else {
-        die ("Error: " . $sql . "<br>" . $conn->error);//FIXME only use during debugging
-    }
-    $result->data_seek(0);
+    $conn->query($sql);
 }
 
 REMOVED
 REMOVED
 REMOVED
 REMOVED
-$conn = new mysqli($servername, $username,$password, $dbname);
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-$name = safePost($conn,"Name");
-$phone = safePost($conn,"Phone");
-$email = safePost($conn,"Email");
-$address = safePost($conn,"Address");
+$name = filter_var(safePost($conn, "Name"), FILTER_SANITIZE_STRING);
+$phone = filter_var(safePost($conn, "Phone"), FILTER_SANITIZE_STRING);
+$email = filter_var(safePost($conn, "Email"), FILTER_SANITIZE_EMAIL);
+$address = filter_var(safePost($conn, "Address"), FILTER_SANITIZE_STRING);
+
+$initialID = filter_var(safeGET($conn, "artName"), FILTER_SANITIZE_STRING);
+$artID = str_replace("Button", "", $initialID);
+
+$artIDField = filter_var(safePost($conn, "artName"), FILTER_SANITIZE_STRING);
+if($artIDField && $name && $email && $phone && $address){
+    orderComplete($conn, $name, $phone, $email, $address, $artIDField);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Order Form</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="indexStyle.css">
+    <meta charset="UTF-8">
+    <title>Order Form</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="indexStyle.css">
 </head>
 <body>
-<p class = "discount"><strong> 20% Off Orders Over £10 </strong></p>
+<p class="discount"><strong> 20% Off Orders Over £10 </strong></p>
 <h1>Cara's Art Shop: Order Form</h1>
 
-<main id ="main">
-<div id = "orderForm">
-<form action="order.php" method="post">
-    <p><label for="name">Name: </label><input id="name" name="Name" value="<?php echo $name?>" type="text"></p>
-    <p><label for="phone">Phone: </label><input id="phone" name="Phone" value="<?php echo $phone?>" type="text"></p>
-    <p><label for="email">Email: </label><input id="email" name="Email" value="<?php echo $email?>" type="text"></p>
-    <p><label for="address">Address: </label><input id="address" name="Address" value="<?php echo $address?>" type="text"></p>
-    <input type="submit">
-</form>
-</div>
-<?php
-$initialName = safeGET($conn,"artName");
-$artName = str_replace("Button","",$initialName);
-echo "artName: " . $artName . "<br>";
+<main id="main">
+    <div id="orderForm">
+        <form action="order.php" method="post">
+            <p><label for="name">Name: </label><input id="name" name="Name" value="<?php echo $name ?>" type="text"></p>
+            <p><label for="phone">Phone: </label><input id="phone" name="Phone" value="<?php echo $phone ?>" type="text"></p>
+            <p><label for="email">Email: </label><input id="email" name="Email" value="<?php echo $email ?>" type="text"></p>
+            <p><label for="address">Address: </label><input id="address" name="Address" value="<?php echo $address ?>" type="text"></p>
+            <p><input id="artName" name="artName" value="<?php echo $artID ?>" type="hidden"></p>
+            <input type="submit">
+        </form>
+    </div>
+    <div class="contentContainerOrder">
+        <?php
+//        Retrieve and display the ArtID from the query parameter
+//        $artID = isset($_GET['buttonID']) ? $_GET['buttonID'] : "";
+//        echo "ArtID: " . $artID;
 
-//$initialArray = array("");
-//$array = array_push($initialArray,$properID);
-//echo "Array0 - " . $array[0] . "\n";
-//echo "Array1 - " . $array[1] . "\n";
-//echo "Array2 - " . $array[2] . "\n";
+//        $array = array();
+//        $i = array_push($array, $artID);
+//        $arrayLength = count($array);
+//        echo "ArrayLength: $arrayLength <br>";
+//        print_r($array);
 
-$artID = getArtID($conn,$artName);
-echo "ID: " . $artID . "<br>";
-if($conn && $name && $phone && $email && $address && $artID){
-    orderComplete($conn,$name,$phone,$email,$address,$artID);
-}
-?>
-<div class="contentContainerOrder">
-    <?php
-    getDetails($conn,$artName);
-    ?>
-</div>
+//        if(markSold($conn,$artID) === true){
+//            echo "Painting Sold.";
+//        } else {
+            if($artID){
+                getDetails($conn, $artID);
+            } else if($artIDField) {
+                getDetails($conn, $artIDField);
+            } else {
+                getDetails($conn, $artID);
+            }
+//        }
+        ?>
+    </div>
 </main>
+<script>
+    function getButtonIdsFromUrl() {
+        let urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('buttonIds');
+    }
+
+    let updatedArray = [];
+    let buttonIds = getButtonIdsFromUrl();
+    if (buttonIds) {
+        buttonIds = JSON.parse(decodeURIComponent(buttonIds));
+        console.log("Button IDs:", buttonIds);
+
+        updatedArray = buttonIds.map(element => element.replace("Button", ""));
+        console.log("Updated array:", updatedArray);
+    } else {
+        console.log("No button IDs found.");
+    }
+
+    function getArt(event){
+        event.preventDefault();
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "orderArt.php", true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log(xhr.responseText);
+            }
+        };
+        for(let i = 0; i< updatedArray.length;i++){
+            console.log(updatedArray[i]);
+            xhr.send("idArt=" + encodeURIComponent(updatedArray[i]));
+        }
+    }
+
+    let errs = "";
+    let name = document.getElementById("name").value;
+    let phone = document.getElementById("phone").value;
+    let email = document.getElementById("email").value;
+    let address = document.getElementById("address").value;
+</script>
 </body>
 </html>
-<?php
