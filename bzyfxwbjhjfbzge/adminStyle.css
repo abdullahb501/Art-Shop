@@ -1,4 +1,39 @@
-/*TODO: Put Media Queries In*/
+@media only screen and (min-width: 1500px) {
+    h1{font-size: 100pt}
+    h2{font-size: 80pt}
+    p{font-size: 40pt}
+    button{
+        width: 100%;
+        height: 100%;
+    }
+    input[type=submit]{
+        width: 100%;
+        height: 100%;
+    }
+    #Name,#Width,#Date,#Height{
+        height: 1000%;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    h1{font-size: 20pt}
+    h2{font-size: 15pt}
+    p{font-size: 12pt}
+    button{
+        width: 100%;
+        height: 100%;
+    }
+    input[type=submit]{
+        width: 100%;
+        height: 100%;
+    }
+    #Name,#Width,#Date,#Height{
+        height: 1000%;
+    }
+    label {padding-right: 0.5rem;}
+    form { margin-left: 0.5rem;}
+}
+
 body {
     background-color: #EF476F;
     margin: 0;
@@ -18,30 +53,6 @@ h1{
 
 p{
     margin: 0;
-}
-
-#Status{
-    background-color: #26547C;
-    color: white;
-    clear: both;
-    margin: 1rem;
-    font-size: 12pt;
-    font-family: Arial,sans-serif;
-}
-
-.noStatus{
-    padding: 1rem;
-}
-
-#updateArtSuccess,#updateOrderSuccess{
-    padding: 1rem;
-    background-color: seagreen;
-    color: black;
-}
-
-.updateArtFail,.updateOrderFail{
-    background-color: darkred;
-    color: white;
 }
 
 button{

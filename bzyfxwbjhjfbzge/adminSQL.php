@@ -14,7 +14,6 @@ $height = isset($_POST["Height"]) ? $_POST["Height"] : 0;
 $price = isset($_POST["Price"]) ? $_POST["Price"] : 0;
 $desc = isset($_POST["Desc"]) ? $_POST["Desc"] : "";
 $sold = isset($_POST["Sold"]) ? $_POST["Sold"] : 0;
-//$file = isset($_FILES["uploadFile"]) ? $_FILES["uploadFile"] : "";
 
 if (isset($_FILES["uploadFile"]) && $_FILES["uploadFile"]["error"] == 0) {
     // Get the file information

@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ?>
             </table>
             <h2>Update Art</h2>
-            <form method="post" enctype="multipart/form-data">
+            <form method="post" enctype="multipart/form-data" onsubmit="return checkUpdateArtForm()">
                 <p><label for="idUpdate">ID:      </label><input id="idUpdate" name="idUpdate" type = text></p>
                 <p><label for="Name">Name:        </label><input id="Name" name="Name" type = text></p>
                 <p><label for="Date">Date:        </label><input id="Date" name="Date" type = text></p>
@@ -92,17 +92,68 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
 
             <h2>Delete Orders</h2>
-            <form method="post">
+            <form method="post" onsubmit="return checkDeleteArtForm()">
                 <p><label for="idDelete">ID To Delete: </label><input id="idDelete" name="idDelete" type = text></p>
                 <input id = "delOrder" type="submit">
             </form>
 
             <script>
+                function checkUpdateArtForm(){
+                    let errs = "";
+                    let id = document.getElementById("idUpdate").value;
+                    let name = document.getElementById("Name").value;
+                    let date = document.getElementById("Date").value;
+                    let width = document.getElementById("Width").value;
+                    let height = document.getElementById("Height").value;
+                    let price = document.getElementById("Price").value;
+                    let desc = document.getElementById("Desc").value;
+
+                    if(id === ""){
+                        errs += "- Please Enter The Art ID To Update.\n";
+                    }
+                    if(name === ""){
+                        errs += "- Please Enter The Name of The Art Piece.\n";
+                    }
+                    if(width === ""){
+                        errs += "- Please Enter The New Width.\n";
+                    }
+                    if(height === ""){
+                        errs += "- Please Enter The New Height.\n";
+                    }
+                    if(date === ""){
+                        errs += "- Please Enter The New Date.\n";
+                    }
+                    if(price === ""){
+                        errs += "- Please Enter The New Price For The Art Piece.\n";
+                    }
+                    if(desc === ""){
+                        errs += "- Please Enter The New Description For The Art Piece.\n";
+                    }
+
+                    if(errs !== ""){
+                        window.alert(errs);
+                    }
+                    return (errs==="");
+                }
+
+                function checkDeleteArtForm(){
+                    let errs = "";
+                    let id = document.getElementById("idDelete").value;
+                    if(id === ""){
+                        errs += "- Please Enter The ID For The Art Piece You Want To Delete.\n";
+                    }
+                    if(errs !== ""){
+                        window.alert(errs);
+                    }
+                    return (errs==="");
+                }
+
+
                 document.getElementById("updateArt").addEventListener("click",updateArt);
                 document.getElementById("delOrder").addEventListener("click",delOrder);
-
                 function updateArt(event){
                     event.preventDefault();
+                    checkUpdateArtForm();
                     const form = document.forms[0];
                     const formData = new FormData(form);
                     formData.append('uploadFile', form.querySelector('#uploadFile').files[0]);
@@ -120,6 +171,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 function delOrder(event){
                     event.preventDefault();
+                    checkDeleteArtForm();
                     const idDel = document.getElementById("idDelete").value;
                     const xhr = new XMLHttpRequest();
                     xhr.open("POST", "adminSQL.php", true);

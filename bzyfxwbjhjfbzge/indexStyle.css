@@ -1,91 +1,16 @@
 /* Mobile View */
 @media only screen and (max-width: 768px) {
-    h1 { font-size: 14pt; }
-    p { font-size: 12pt; }
-    body { background-color: black; }
-
-    img { height: 8rem; width: 8rem; }
-
-    #navbar {
-        text-align: center;
-    }
-
-    #navbar a {
-        display: block;
-        margin: 0.5rem;
-    }
-
-    h1 {
-        font-size: 36pt;
-        margin: 0.5rem;
-    }
-
-    p { font-size: 16px; }
-
-    .contentContainer {
-        margin: 0.5rem;
-    }
-
-    #main {
-        display: block;
-    }
-
-    #orderForm,
-    #contentContainerOrder {
-        width: 100%;
-    }
-
-    form {
-        margin-left: 0;
-    }
-
-    form label {
-        display: block;
-        padding: 0.5rem 0;
-    }
-
-    form input {
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    #contentGrid {
-        grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
-        grid-gap: 0.5rem;
-    }
+    img { height: 8rem;width: 8rem; }
+    background-color: violet;
 }
 
 /* Small Screen View */
 @media only screen and (max-width: 480px) {
-    h1 { font-size: 12px; }
-    p { font-size: 10px; }
-    body { background-color: lightskyblue; }
-
     img { height: 6rem; width: 6rem; }
-
-    #navbar {
-        text-align: center;
-    }
-
-    #navbar a {
-        display: block;
-        padding: 0.5rem;
-    }
-
-    h1 { font-size: 24pt; }
-
-    .discount {
-        margin: 0.5rem;
-        padding: 0.3rem;
-    }
-
-    #contentGrid {
-        grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
-        grid-gap: 0.5rem;
+    body{
+        background-color: yellow;
     }
 }
-
-/*TODO: Fix Media Queries*/
 
 body {
     background-color: #EF476F;
@@ -186,7 +111,6 @@ p{
 }
 
 .contentContainer{
-    display: none;
     background-color: cornflowerblue;
     border-style: solid;
     padding: 1rem;
@@ -219,6 +143,11 @@ form input { display: table-cell; width: 200%}
     margin-left: 1rem;
 }
 
+#contentContainerOrder img{
+    height: 20rem;
+    width: 20rem;
+}
+
 /*Mobile View*/
 @media only screen and (max-width: 800px) {
     #main{
@@ -232,12 +161,68 @@ form input { display: table-cell; width: 200%}
     }
 
     #contentContainerOrder{
-        width: 70%;
-        background-color: cornflowerblue;
         padding: 1rem;
         margin-left: 1rem;
     }
 }
+
+@media screen and (min-width: 2000px){
+    img{
+        width: 30rem;
+        height: 30rem;
+    }
+
+    #contentGrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr)); /* Adjust column width as needed */
+        grid-gap: 1rem; /* Adjust the gap between grid items as needed */
+    }
+
+    .contentContainer{
+        padding: 10rem;
+        margin-left: 10rem;
+    }
+}
+
+@media screen and (min-width: 1000px){
+    img{
+        width: 15rem;
+        height: 15rem;
+    }
+
+    #contentGrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(23rem, 1fr)); /* Adjust column width as needed */
+        grid-gap: 1rem; /* Adjust the gap between grid items as needed */
+    }
+
+    .contentContainer{
+        padding: 1rem;
+        margin-left: 1rem;
+    }
+}
+
+@media screen and (max-width: 200px){
+    img{
+        width: 5rem;
+        height: 5rem;
+    }
+
+    #contentGrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); /* Adjust column width as needed */
+        grid-gap: 1rem; /* Adjust the gap between grid items as needed */
+    }
+
+    .contentContainer{
+        padding: 1rem;
+        margin-left: 1rem;
+    }
+}
+
+
+
+
 
 .details{
     background-color: #26547C;

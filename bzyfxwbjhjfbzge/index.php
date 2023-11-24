@@ -71,19 +71,8 @@ function content($conn,$a,$count){
         <?php
         getDetails($conn,$a[$count]);
         ?>
-        <p><button id= "<?php echo $a[$count]."Button" ?>" name = "<?php echo $a[$count]."Button" ?>" onclick="orderForm('<?php echo $a[$count]."Button" ?>')">Order</button></p>
-
-<!--    --><?php
-//        if(checkSold($conn,$a[$count]) === true){
-//        ?>
-<!--            <button disabled>Painting Sold</button>-->
-<!--        --><?php
-//        } else {
-//        ?>
-<!--Real Button goes here-->
-         <?php
-//        }
-//        ?>
+        <p><button id= "<?php echo $a[$count]."SingleButton" ?>" name = "<?php echo $a[$count]."SingleButton" ?>" onclick="orderSingle('<?php echo $a[$count]."SingleButton" ?>')">Order One</button></p>
+        <p><button id= "<?php echo $a[$count]."Button" ?>" name = "<?php echo $a[$count]."Button" ?>" onclick="orderForm('<?php echo $a[$count]."Button" ?>')">Add To Basket</button></p>
     </div>
 <?php
 }
@@ -177,6 +166,10 @@ function content($conn,$a,$count){
 
     hideAllContent();
     showContent(currentArtIndex, itemsPerPage);
+
+    function orderSingle(buttonID){
+        window.location.href="order.php?singleArt="+buttonID;
+    }
 
     document.getElementById("basket").addEventListener("click", basketCheck);
     const buttonIdsArray = [];
