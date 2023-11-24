@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </table>
             <h2>Update Art</h2>
             <form method="post" enctype="multipart/form-data" onsubmit="return checkUpdateArtForm()">
-                <p><label for="idUpdate">ID:      </label><input id="idUpdate" name="idUpdate" type = text></p>
+                <p><label for="idUpdate">ID:      </label><input id="idUpdate" name="idUpdate" type = text required></p>
                 <p><label for="Name">Name:        </label><input id="Name" name="Name" type = text></p>
                 <p><label for="Date">Date:        </label><input id="Date" name="Date" type = text></p>
                 <p><label for="Width">Width:      </label><input id="Width" name="Width" type = text></p>
@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <h2>Delete Orders</h2>
             <form method="post" onsubmit="return checkDeleteArtForm()">
-                <p><label for="idDelete">ID To Delete: </label><input id="idDelete" name="idDelete" type = text></p>
+                <p><label for="idDelete">ID To Delete: </label><input id="idDelete" name="idDelete" type = text required></p>
                 <input id = "delOrder" type="submit">
             </form>
 

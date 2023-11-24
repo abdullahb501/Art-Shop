@@ -1,15 +1,11 @@
 /* Mobile View */
 @media only screen and (max-width: 768px) {
     img { height: 8rem;width: 8rem; }
-    background-color: violet;
 }
 
 /* Small Screen View */
 @media only screen and (max-width: 480px) {
     img { height: 6rem; width: 6rem; }
-    body{
-        background-color: yellow;
-    }
 }
 
 body {
@@ -219,10 +215,6 @@ form input { display: table-cell; width: 200%}
         margin-left: 1rem;
     }
 }
-
-
-
-
 
 .details{
     background-color: #26547C;

@@ -22,15 +22,6 @@ function getDetails($conn, $id){
     return  false;
 }
 
-function markSold($conn, $id){
-    $sql = "UPDATE `Art` SET `Sold`='1' WHERE `ID`='$id'";
-    $result = $conn->query($sql);
-    if($result){
-        return true;
-    }
-    return false;
-}
-
 function orderComplete($conn, $name, $phone, $email, $address, $artID){
     $sql = "INSERT INTO `Order` (`ID`,`Name`,`Phone`,`Email`,`Postal_Address`,`ArtID`)
             VALUES (NULL,'$name','$phone','$email','$address','$artID')";
@@ -87,32 +78,16 @@ if($artIDField && $name && $email && $phone && $address){
         <form id = "buyArt" action="order.php" method="post" onsubmit="return checkOrderForm()">
             <p><label for="name">Name: </label><input id="name" name="Name" type="text"></p>
             <p><label for="phone">Phone: </label><input id="phone" name="Phone" type="text"></p>
-            <p><label for="email">Email: </label><input id="email" name="Email" type="text"></p>
-            <p><label for="address">Address: </label><input id="address" name="Address" type="text"></p>
+            <p><label for="email">Email: </label><input id="email" name="Email" type="text" required></p>
+            <p><label for="address">Address: </label><input id="address" name="Address" type="text" required></p>
             <p><input id="artName" name="artName" value="<?php echo $artID ?>" type="hidden"></p><br>
             <input id = "insertData" type="submit">
         </form>
     </div>
     <div id="contentContainerOrder">
         <?php
-
-//        TODO: Make Orders entered into database when submitted with art id
-//        TODO: Make multiple order entries when multiple paintings are selected
-//        $singleArt = filter_var(safeGET($conn, "singleArt"), FILTER_SANITIZE_STRING);
-//        $artID = str_replace("SingleButton", "", $singleArt);
+//        TODO: Make Basket Items inserted into database and removed by the user when wanted.
         getDetails($conn, $artID);
-//
-//        $name = isset($_POST["name"]) ? $_POST["name"] : "";
-//        $phone = isset($_POST["phone"]) ? $_POST["phone"] : "";
-//        $email = isset($_POST["email"]) ? $_POST["email"] : "";
-//        $address = isset($_POST["address"]) ? $_POST["address"] : "";
-//        $artID = $singleArt;
-//
-//        if($name && $artID){
-//            $sql = "INSERT INTO `Order` (`ID`,`Name`,`Phone`,`Email`,`Postal_Address`,`ArtID`)
-//            VALUES (NULL,'$name','$phone','$email','$address','$artID')";
-//            $conn->query($sql);
-//        }
         ?>
     </div>
 </main>
@@ -248,16 +223,6 @@ if($artIDField && $name && $email && $phone && $address){
         }
         return (errs==="");
     }
-
-
-
-
-
-
-
-
-
-
 </script>
 </body>
 </html>
