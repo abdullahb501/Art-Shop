@@ -1,5 +1,4 @@
 <?php
-//session_start();
 function safeGET($conn, $name){
     return isset($_GET[$name]) ? $conn->real_escape_string(strip_tags($_GET[$name])) : "";
 }
@@ -12,18 +11,8 @@ function getDetails($conn, $id){
     $sql = "SELECT * FROM `Art` WHERE `ID` = '$id'";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
-       $row = $result->fetch_assoc();
-            echo "<div id =\"details\"><table>" .
-                "<tr><td>" . '<img alt="image" src="data:image/jpeg;base64,' . base64_encode($row['Picture']) . '"/>' . "</tr></td>" .
-                "<tr><td> ID: " . $row["ID"] . "</td></tr>" .
-                "<tr><td> Name: " . $row["Name"] . "</td></tr>" .
-                "<tr><td> Date: " . $row["Date"] . "</td></tr>" .
-                "<tr><td> Width: " . $row["Width"] . "m </td></tr>" .
-                "<tr><td> Height: " . $row["Height"] . "m </td></tr>" .
-                "<tr><td> Price: £" . $row["Price"] . "</td></tr>" .
-                "<tr><td> Desc: " . $row["Description"] . "</td></tr>" .
-                "</table></div>";
-            return true;
+        showDetails($result);
+        return true;
     }
     $result->data_seek(0);
     return  false;
@@ -38,11 +27,14 @@ function markSold($conn, $id){
     return false;
 }
 
-
 function orderComplete($conn, $name, $phone, $email, $address, $artID){
     $sql = "INSERT INTO `Order` (`ID`,`Name`,`Phone`,`Email`,`Postal_Address`,`ArtID`)
             VALUES (NULL,'$name','$phone','$email','$address','$artID')";
-    $conn->query($sql);
+    $result = $conn->query($sql);
+    if($result){
+        return true;
+    }
+    return false;
 }
 
 REMOVED
@@ -88,6 +80,12 @@ if($artIDField && $name && $email && $phone && $address){
         </form>
     </div>
     <div class="contentContainerOrder">
+        <p id = "contentContainerOrder">
+
+
+
+
+        </p>
         <?php
 //        Retrieve and display the ArtID from the query parameter
 //        $artID = isset($_GET['buttonID']) ? $_GET['buttonID'] : "";
@@ -119,32 +117,34 @@ if($artIDField && $name && $email && $phone && $address){
         return urlParams.get('buttonIds');
     }
 
-    let updatedArray = [];
-    let buttonIds = getButtonIdsFromUrl();
-    if (buttonIds) {
-        buttonIds = JSON.parse(decodeURIComponent(buttonIds));
-        console.log("Button IDs:", buttonIds);
+    document.addEventListener("DOMContentLoaded", function() {
+        let updatedArray = [];
+        let buttonIds = getButtonIdsFromUrl();
+        if (buttonIds) {
+            buttonIds = JSON.parse(decodeURIComponent(buttonIds));
+            console.log("Button IDs:", buttonIds);
 
-        updatedArray = buttonIds.map(element => element.replace("Button", ""));
-        console.log("Updated array:", updatedArray);
-    } else {
-        console.log("No button IDs found.");
-    }
+            updatedArray = buttonIds.map(element => element.replace("Button", ""));
+            console.log("Updated array:", updatedArray);
+        } else {
+            console.log("No button IDs found.");
+        }
 
-    function getArt(event){
-        event.preventDefault();
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", "orderArt.php", true);
+        let xhr = new XMLHttpRequest();
+        let url = "orderArt.php";
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
+                // Handle the response from the server
                 console.log(xhr.responseText);
+                document.getElementById('contentContainerOrder').innerHTML = xhr.responseText;
             }
         };
-        for(let i = 0; i< updatedArray.length;i++){
-            console.log(updatedArray[i]);
-            xhr.send("idArt=" + encodeURIComponent(updatedArray[i]));
-        }
-    }
+        let data = JSON.stringify({ updatedArray: updatedArray });
+        xhr.send(data);
+    });
 
     let errs = "";
     let name = document.getElementById("name").value;

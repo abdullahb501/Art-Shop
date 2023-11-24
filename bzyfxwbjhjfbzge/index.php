@@ -184,6 +184,7 @@ function content($conn,$a,$count){
     function orderForm(buttonId) {
         if(!buttonIdsArray.includes(buttonId)){
             buttonIdsArray.push(buttonId);
+            console.log(buttonIdsArray);
         }
     }
 

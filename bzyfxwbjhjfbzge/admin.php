@@ -1,4 +1,3 @@
-<!--admin page-->
 <?php
 function safePost($conn,$name){
     return isset($_POST[$name])?$conn->real_escape_string(strip_tags($_POST[$name])):"";
@@ -24,7 +23,7 @@ function getOrder($conn){
                 "</tr>";
         }
     } else {
-        die ("No matches");
+       echo "Sorry, there are no orders to display right now.";
     }
     $result->data_seek(0);
 }
@@ -54,7 +53,7 @@ function passForm(){
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['pass'])) {
         $pass = safePost($conn, "pass");
-        if ($pass === "") {
+        if ($pass === "WeKnowTheGame23") {
             ?>
             <!DOCTYPE html>
             <html lang="en">
@@ -79,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ?>
             </table>
             <h2>Update Art</h2>
-            <form action="admin.php" method="post" enctype="multipart/form-data">
+            <form method="post" enctype="multipart/form-data">
                 <p><label for="idUpdate">ID:      </label><input id="idUpdate" name="idUpdate" type = text></p>
                 <p><label for="Name">Name:        </label><input id="Name" name="Name" type = text></p>
                 <p><label for="Date">Date:        </label><input id="Date" name="Date" type = text></p>
@@ -87,13 +86,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <p><label for="Height">Height:    </label><input id="Height" name="Height" type = text></p>
                 <p><label for="Price">Price:      </label><input id="Price" name="Price" type = text></p>
                 <p><label for="Desc">Description: </label><input id="Desc" name="Desc" type = text></p>
-                <!--        TODO: Add a way for admin to add picture here-->
+                <p><label for="Sold">Sold (0 for no, 1 for Yes): </label><input id="Sold" name="Sold" type = text></p>
                 <input type="file" name="uploadFile" id="uploadFile">
-                <p><input id="updateArt" type="submit">
+                <p><input id="updateArt" name="uploadFile" type="submit">
             </form>
 
             <h2>Delete Orders</h2>
-            <form action="admin.php" method="post">
+            <form method="post">
                 <p><label for="idDelete">ID To Delete: </label><input id="idDelete" name="idDelete" type = text></p>
                 <input id = "delOrder" type="submit">
             </form>
@@ -106,9 +105,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     event.preventDefault();
                     const form = document.forms[0];
                     const formData = new FormData(form);
+                    formData.append('uploadFile', form.querySelector('#uploadFile').files[0]);
 
                     const xhr = new XMLHttpRequest();
                     xhr.open("POST", "adminSQL.php", true);
+                    xhr.setRequestHeader("enctype", "multipart/form-data"); // Set the content type for file uploads
                     xhr.onreadystatechange = function () {
                         if (xhr.readyState === 4 && xhr.status === 200) {
                             console.log(xhr.responseText);
