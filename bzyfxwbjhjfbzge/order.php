@@ -66,7 +66,9 @@ if($artIDField && $name && $email && $phone && $address){
 </head>
 <body>
 <p class="discount"><strong> 20% Off Orders Over £10 </strong></p>
-<h1>Cara's Art Shop: Order Form</h1>
+<h1>Cara's Art Shop</h1>
+<br>
+<h2>Order Form</h2>
 
 <main id="main">
     <div id="orderForm">
@@ -75,27 +77,15 @@ if($artIDField && $name && $email && $phone && $address){
             <p><label for="phone">Phone: </label><input id="phone" name="Phone" value="<?php echo $phone ?>" type="text"></p>
             <p><label for="email">Email: </label><input id="email" name="Email" value="<?php echo $email ?>" type="text"></p>
             <p><label for="address">Address: </label><input id="address" name="Address" value="<?php echo $address ?>" type="text"></p>
-            <p><input id="artName" name="artName" value="<?php echo $artID ?>" type="hidden"></p>
+            <p><input id="artName" name="artName" value="<?php echo $artID ?>" type="hidden"></p><br>
             <input type="submit">
         </form>
     </div>
-    <div class="contentContainerOrder">
-        <p id = "contentContainerOrder">
-
-
-
-
-        </p>
+    <div id="contentContainerOrder">
         <?php
-//        Retrieve and display the ArtID from the query parameter
-//        $artID = isset($_GET['buttonID']) ? $_GET['buttonID'] : "";
-//        echo "ArtID: " . $artID;
 
-//        $array = array();
-//        $i = array_push($array, $artID);
-//        $arrayLength = count($array);
-//        echo "ArrayLength: $arrayLength <br>";
-//        print_r($array);
+//        TODO: Make Orders entered into database when submitted with art id
+//        TODO: Make multiple order entries when multiple paintings are selected
 
 //        if(markSold($conn,$artID) === true){
 //            echo "Painting Sold.";
@@ -138,14 +128,20 @@ if($artIDField && $name && $email && $phone && $address){
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 // Handle the response from the server
-                console.log(xhr.responseText);
                 document.getElementById('contentContainerOrder').innerHTML = xhr.responseText;
+
+
+
+
+
+
             }
         };
         let data = JSON.stringify({ updatedArray: updatedArray });
         xhr.send(data);
     });
 
+    // TODO: JavaScript Videos Errors Best Practice (Probs do same on admin update and delete)
     let errs = "";
     let name = document.getElementById("name").value;
     let phone = document.getElementById("phone").value;

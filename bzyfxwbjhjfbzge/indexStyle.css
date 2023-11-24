@@ -1,14 +1,91 @@
+/* Mobile View */
 @media only screen and (max-width: 768px) {
-    h1 {font-size: 14pt;}
-    p{font-size: 12pt;}
-    body{background-color: black;}
+    h1 { font-size: 14pt; }
+    p { font-size: 12pt; }
+    body { background-color: black; }
+
+    img { height: 8rem; width: 8rem; }
+
+    #navbar {
+        text-align: center;
+    }
+
+    #navbar a {
+        display: block;
+        margin: 0.5rem;
+    }
+
+    h1 {
+        font-size: 36pt;
+        margin: 0.5rem;
+    }
+
+    p { font-size: 16px; }
+
+    .contentContainer {
+        margin: 0.5rem;
+    }
+
+    #main {
+        display: block;
+    }
+
+    #orderForm,
+    #contentContainerOrder {
+        width: 100%;
+    }
+
+    form {
+        margin-left: 0;
+    }
+
+    form label {
+        display: block;
+        padding: 0.5rem 0;
+    }
+
+    form input {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    #contentGrid {
+        grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+        grid-gap: 0.5rem;
+    }
 }
 
+/* Small Screen View */
 @media only screen and (max-width: 480px) {
-    h1 {font-size: 12px;}
-    p{font-size: 10px;}
-    body{background-color: lightskyblue;}
+    h1 { font-size: 12px; }
+    p { font-size: 10px; }
+    body { background-color: lightskyblue; }
+
+    img { height: 6rem; width: 6rem; }
+
+    #navbar {
+        text-align: center;
+    }
+
+    #navbar a {
+        display: block;
+        padding: 0.5rem;
+    }
+
+    h1 { font-size: 24pt; }
+
+    .discount {
+        margin: 0.5rem;
+        padding: 0.3rem;
+    }
+
+    #contentGrid {
+        grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+        grid-gap: 0.5rem;
+    }
 }
+
+/*TODO: Fix Media Queries*/
 
 body {
     background-color: #EF476F;
@@ -64,13 +141,22 @@ img{
 h1{
     border-style: ridge;
     border-width: 0.5rem;
-    float: left;
     font-size: 50pt;
-    display: inline;
+    display: inline-block;
     background-color: #26547C;
     color: white;
     padding: 1rem;
-    margin: 0 1rem 1rem 1rem;
+    margin: 0.5rem 0 0.5rem 0;
+}
+
+h2{
+    border-style: ridge;
+    border-width: 0.5rem;
+    display: inline-block;
+    background-color: #26547C;
+    color: white;
+    padding: 1rem;
+    margin: 0.5rem 0 0.5rem 0;
 }
 
 p{
@@ -107,29 +193,50 @@ p{
     margin: 1rem;
 }
 
+/*https://stackoverflow.com/questions/4309950/how-to-align-input-forms-in-html*/
+form       { display: table; margin-left: 1rem;}
+form p     { display: table-row;  }
+form label { display: table-cell; padding-right: 1rem;}
+form input { display: table-cell; width: 200%}
+
 #main{
     display: table;
+    flex-direction: column;
     width: 100%;
 }
 
 #orderForm{
     display: table-cell;
     width: 50%;
+    margin-bottom: 0.5rem;
 }
 
-/*https://stackoverflow.com/questions/4309950/how-to-align-input-forms-in-html*/
-form  { display: table; margin-left: 1rem;}
-form p     { display: table-row;  }
-form label { display: table-cell; padding-right: 1rem;}
-form input { display: table-cell; }
-
-.contentContainerOrder{
+#contentContainerOrder{
     display: table-cell;
     width: 50%;
-    /*margin-left: 10rem; !* Thank you IE *!*/
-    border-left: 1px solid black;
     background-color: cornflowerblue;
     padding: 1rem;
+    margin-left: 1rem;
+}
+
+/*Mobile View*/
+@media only screen and (max-width: 800px) {
+    #main{
+        display: flex;
+        flex-direction: column;
+    }
+
+    #orderForm{
+        width: 50%;
+        margin-bottom: 0.5rem;
+    }
+
+    #contentContainerOrder{
+        width: 70%;
+        background-color: cornflowerblue;
+        padding: 1rem;
+        margin-left: 1rem;
+    }
 }
 
 .details{
@@ -137,8 +244,3 @@ form input { display: table-cell; }
     padding: 0 0.5rem 0.5rem 0.5rem;
     color: white;
 }
-
-/*table{*/
-/*    clear: both;*/
-/*    margin: 1rem;*/
-/*}*/
