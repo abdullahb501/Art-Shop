@@ -40,7 +40,7 @@ function passForm(){
     <body>
     <h2>Admin Login</h2>
     <form action="admin.php" method="post">
-        <p><label style="padding: 0" for="pass"></label><input id="pass" name="pass" type="password"></p>
+        <p><label style="padding: 0" for="pass"></label><input id="pass" name="pass" type="password" required></p>
         <br>
         <p><label style="padding: 0" for="submit"></label><input id="submit" type="submit"></p>
     </form>
