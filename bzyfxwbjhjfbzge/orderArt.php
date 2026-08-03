@@ -1,10 +1,7 @@
 <?php
 session_start();
 
-REMOVED
-REMOVED
-REMOVED
-REMOVED
+// SQL Creds
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 function safePost($conn, $name){

@@ -3,10 +3,7 @@ function safePost($conn,$name){
     return isset($_POST[$name])?$conn->real_escape_string(strip_tags($_POST[$name])):"";
 }
 
-REMOVED
-REMOVED
-REMOVED
-REMOVED
+// SQL Creds
 $conn = new mysqli($servername, $username,$password, $dbname);
 
 function getOrder($conn){

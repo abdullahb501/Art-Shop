@@ -1,9 +1,6 @@
 
 <?php
-REMOVED
-REMOVED
-REMOVED
-REMOVED
+// SQL Creds
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 $idUpdate = isset($_POST["idUpdate"]) ? $_POST["idUpdate"] : "";

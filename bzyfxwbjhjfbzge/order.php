@@ -32,10 +32,7 @@ function orderComplete($conn, $name, $phone, $email, $address, $artID){
     return false;
 }
 
-REMOVED
-REMOVED
-REMOVED
-REMOVED
+// SQL Creds
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 $name = filter_var(safePost($conn, "Name"), FILTER_SANITIZE_STRING);
